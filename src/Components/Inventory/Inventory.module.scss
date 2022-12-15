@@ -1,3 +1,184 @@
-.Table {
-    
+// .container {
+
+// }
+
+.Inventory {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  .Inventory_menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    width: 100%;
+    max-width: 236px;
+    height: 100%;
+    max-height: 500px;
+    background-color: #262626;
+    border-radius: 25px;
+    border: 1px solid #4d4d4d;
+
+    img {
+      margin: 18px 14px 20px 14px;
+      max-width: 248px;
+      max-height: 240px;
+    }
+    .Inventory_menu__text {
+      color: #5d5d5d;
+    }
+  }
+}
+
+.Table_container {
+  display: flex;
+  flex-direction: row;
+
+  overflow-x: hidden;
+
+  .Table {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 100px);
+    width: 525px;
+    max-height: 500px;
+    background-color: #262626;
+    border-radius: 25px;
+    max-width: 525px;
+    margin-left: 20px;
+    overflow: hidden;
+    .cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #4d4d4d;
+      max-width: 100px;
+      max-height: 100px;
+      cursor: url("../../img//cursor2.png"), pointer;
+      z-index: 1;
+      overflow: hidden;
+      img {
+        margin-top: 15px;
+      }
+      .amount {
+        margin-left: 70px;
+        margin-top: 5px;
+        padding: 5px;
+        border-left: 1px solid #4d4d4d;
+        border-top: 1px solid #4d4d4d;
+        border-radius: 5px;
+        color: #ffffff;
+        opacity: 0.4;
+      }
+    }
+    .cell:hover {
+      background-color: #5d5d5d;
+      .amount {
+        background-color: #262626;
+      }
+    }
+  }
+
+  .Modal_container {
+    .Modal {
+      position: absolute;
+      width: 100%;
+      max-width: 250px;
+      min-height: 499px;
+      background-color: #262626;
+      z-index: 10;
+      transition: translate;
+      transition-property: transform;
+      transition-duration: 1000ms;
+      transition-timing-function: ease-in-out;
+      border-radius: 25px;
+      border-right: 1px solid #262626;
+      opacity: 0.9;
+      .Modal__close {
+        margin: 15px;
+        display: flex;
+        justify-content: flex-end;
+        font-size: 30px;
+        color: white;
+        cursor: url("../../img//cursor2.png"), pointer;
+      }
+
+      .Modal__img,
+      .Modal__text {
+        display: flex;
+        justify-content: center;
+        border-bottom: 1px solid #5d5d5d;
+        padding: 20px;
+      }
+
+      .Modal__text {
+        flex-direction: column;
+        align-items: center;
+        color: #5d5d5d;
+      }
+      .Modal__button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        button {
+          margin-top: 60px;
+          width: 220px;
+          height: 39px;
+          background-color: #fa7272;
+          color: white;
+          cursor: url("../../img//cursor2.png"), pointer;
+          border-radius: 8px;
+        }
+        button:hover {
+          background-color: #f1f1f1;
+          color: #262626;
+        }
+        button:active {
+          background-color: #fa7272;
+        }
+        input {
+          margin-top: 20px;
+          background-color: transparent;
+          border-color: #4d4d4d;
+          padding: 10px;
+        }
+        .Modal__button_delete {
+          display: flex;
+          flex-direction: row;
+          .cancel,
+          .delete {
+            height: 33px;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            margin-top: 30px;
+          }
+          .cancel {
+            width: 88px;
+            background: #ffffff;
+            color: #262626;
+          }
+
+          .cancel:hover {
+            background-color: #5d5d5d;
+            color: white;
+          }
+          .cancel:active {
+            background-color: white;
+          }
+          .delete {
+            width: 103px;
+            margin-left: 5px;
+          }
+        }
+      }
+    }
+  }
 }
