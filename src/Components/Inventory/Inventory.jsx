@@ -7,7 +7,10 @@ import Table from "./Table/Table";
 import Panel from "./Panel/Panel";
 
 const Inventory = () => {
-  const [color, setColor] = useState();
+  let light = "#f1f1f1";
+  let black = "#1e1e1e";
+ 
+  const [color, setColor] = useState(light);
   const [tableColor, setTableColor] = useState();
   const [borderColor, setBorderColor] = useState();
   const [textColor, setTextColor] = useState();
@@ -16,25 +19,29 @@ const Inventory = () => {
     localStorage.setItem("items", JSON.stringify(items));
     window.location.reload();
   }
-  function changeTheme() {
-    let light = "#f1f1f1";
-    let black = "#1e1e1e";
 
+  function changeTheme() {
     if (color === light) {
-      setColor(black);
-      document.body.style.backgroundColor = color;
-      setTableColor((prev) => (prev = "#4e4e4e"));
-      setBorderColor((prev) => (prev = "#262626"));
-      setTextColor("#6e6e6e");
+      darkTheme();
     } else {
+      lightTheme();
+    }
+    function lightTheme() {
       setColor(light);
       document.body.style.backgroundColor = color;
-      setTableColor((prev) => (prev = "#262626"));
-      setBorderColor((prev) => (prev = "#4e4e4e"));
-
+      setTableColor("#262626");
+      setBorderColor("#4e4e4e");
       setTextColor("#4e4e4e");
     }
+    function darkTheme() {
+      setColor(black);
+      document.body.style.backgroundColor = color;
+      setTableColor("#4e4e4e");
+      setBorderColor("#262626");
+      setTextColor("#6e6e6e");
+    }
   }
+
   return (
     <div className={cl.Inventory}>
       <div className={cl.row}>

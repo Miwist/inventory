@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import cl from "./Table.module.scss";
 import { items } from "../items";
 import Modal from "../Modal/Modal";
@@ -7,6 +7,7 @@ const Table = ({ borderColor, tableColor }) => {
   const [item, setItem] = useState();
   const [modalMove, setModalMove] = useState(525);
   const [showModal, setShowModal] = useState(false);
+  const [currentItem, setCurrentItem] = useState();
 
   let itemsAll = JSON.parse(localStorage.getItem("items"));
 
@@ -16,12 +17,6 @@ const Table = ({ borderColor, tableColor }) => {
 
   if (itemsAll === null) {
     onLoad();
-  }
-
-  let emptyCells = [];
-
-  for (let i = 0; i < 30; i++) {
-    emptyCells.push(i);
   }
 
   function selectItem(id) {
@@ -36,17 +31,53 @@ const Table = ({ borderColor, tableColor }) => {
     }
   }
 
-  function dragStartHandler(e) {}
-  function dragLeaveHandler(e) {}
-  function dragEndHandler(e, cell) {
-    console.log(cell);
+  function dragStartHandler(e, item) {
+    setCurrentItem(item);
+  }
+
+  function dragLeaveHandler(e) {
+    e.target.style.background = "#262626";
+    e.target.style.boxShadow = "none";
+  }
+
+  function dragEndHandler(e) {
     e.preventDefault();
+    e.target.style.background = "#262626";
+    e.target.style.boxShadow = "none";
   }
   function dragOverHandler(e) {
     e.preventDefault();
+    if (e.target.className == "cell") {
+      e.target.style.boxShadow = "0 2px 3px gray";
+    }
+    e.target.style.background = "#2e2e2e";
   }
-  function dragDropHandler(e, cell) {
-    console.log(cell);
+  function dropHandler(e, item) {
+    e.preventDefault();
+
+    const indexItem = itemsAll.indexOf(item);
+    let res = itemsAll.filter(e => e.id === currentItem.id);
+    const indexCurrent = itemsAll.indexOf(res[0]);
+    console.log(indexCurrent);
+    console.log(res);
+    // itemsAll.splice(indexCurrent, 1);
+
+    // itemsAll.splice(indexItem, 0, currentItem);
+    itemsAll[indexCurrent] = itemsAll.id = indexCurrent
+    itemsAll[indexItem] = currentItem
+
+    itemsAll = itemsAll.map((b) => {
+      if (b.id === item.id) {
+        return item;
+      }
+      if (b.id === currentItem.id) {
+        return currentItem;
+      }
+      return b;
+    });
+ 
+    localStorage.setItem("items", JSON.stringify(itemsAll));
+    window.location.reload();
   }
 
   return (
@@ -56,35 +87,27 @@ const Table = ({ borderColor, tableColor }) => {
           <div
             className={cl.cell}
             onClick={() => selectItem(item.id)}
-            onDragStart={(e) => dragStartHandler(e)}
-            onDragLeave={(e) => dragLeaveHandler(e)}
-            onDragEnd={(e) => dragEndHandler(e)}
-            onDragOver={(e) => dragOverHandler(e)}
-            onDragDrop={(e) => dragDropHandler(e)}
+            onDragStart={(e) => dragStartHandler(e, item)}
+            onDragLeave={(e) => dragLeaveHandler(e, item)}
+            onDragEnd={(e) => dragEndHandler(e, item)}
+            onDragOver={(e) => dragOverHandler(e, item)}
+            onDrop={(e) => dropHandler(e, item)}
             draggable={true}
             style={{ borderColor: `${borderColor}` }}
           >
-            <img src={item.img} alt={item.name} />
-            <div
-              className={cl.amount}
-              style={{ borderColor: `${borderColor}` }}
-            >
-              {item.amount}
-            </div>
-          </div>
-        ))}
+            {item.amount ? <img src={item.img} alt={item.name} /> : <div></div>}
 
-        {emptyCells.map((item) => (
-          <div
-            className={cl.cell}
-            onDragStart={(e) => dragStartHandler(e)}
-            onDragLeave={(e) => dragLeaveHandler(e)}
-            onDragEnd={(e) => dragEndHandler(e)}
-            onDragOver={(e) => dragOverHandler(e)}
-            onDragDrop={(e) => dragDropHandler(e)}
-            draggable={true}
-            style={{ borderColor: `${borderColor}` }}
-          ></div>
+            {item.amount ? (
+              <div
+                className={cl.amount}
+                style={{ borderColor: `${borderColor}` }}
+              >
+                {item.amount}
+              </div>
+            ) : (
+              <div></div>
+            )}
+          </div>
         ))}
       </div>
 

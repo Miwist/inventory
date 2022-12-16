@@ -4,6 +4,8 @@ import cl from "./Modal.module.scss";
 const Modal = ({ item, setModalMove, itemsAll, modalMove, setShowModal }) => {
   const [showDelete, setShowDelete] = useState(false);
   const [valid, setValid] = useState(false);
+  const [colorValid, setColorValid] = useState("#4d4d4d");
+  const [textValid, setTextValid] = useState("Введите количество...");
 
   let amountRef = useRef();
 
@@ -14,34 +16,39 @@ const Modal = ({ item, setModalMove, itemsAll, modalMove, setShowModal }) => {
     }
     setTimeout(close, 800);
   }
+  function validItem() {
+    let amount = amountRef.current.value;
+
+    if (amount <= item[0].amount && amount > 0) {
+      setValid(true);
+      deleteItem();
+    } else {
+      setValid(false);
+      setColorValid("#e24d4d");
+      amountRef.current.value = "";
+      setTextValid("Неверное количество");
+    }
+  }
+
   function deleteItem() {
     let amount = amountRef.current.value;
     let Id = item[0].id;
 
-    if (amount <= item[0].amount && amount >= 0) {
-      setValid(true);
-    } else {
-      setValid(false);
-    }
+    item[0].amount = item[0].amount - amount;
 
-    if (valid === true) {
-      item[0].amount = item[0].amount - amount;
+    itemsAll.forEach((element) => {
+      if (element.id === Id) {
+        element.amount = item[0].amount;
+      }
+      if (element.amount <= 0) {
+        itemsAll = itemsAll.filter((t) => t.id !== Id);
+      }
+    });
 
-      itemsAll.forEach((element) => {
-        if (element.id === Id) {
-          element.amount = item[0].amount;
-        }
-        if (element.amount <= 0) {
-          itemsAll = itemsAll.filter((t) => t.id !== Id);
-        }
-      });
+    localStorage.setItem("items", JSON.stringify(itemsAll));
 
-      localStorage.setItem("items", JSON.stringify(itemsAll));
-
-      setShowModal(false);
-      setModalMove(525);
-    }
-    console.log(itemsAll === null);
+    setShowModal(false);
+    setModalMove(525);
   }
 
   return (
@@ -50,8 +57,8 @@ const Modal = ({ item, setModalMove, itemsAll, modalMove, setShowModal }) => {
         className={cl.Modal}
         style={{ transform: `translateX(${modalMove}px)` }}
       >
-        <div className={cl.Modal__close} onClick={closeModal}>
-          x
+        <div className={cl.Modal__close}>
+          <p onClick={closeModal}>x</p>
         </div>
 
         {item.map((item) => (
@@ -68,24 +75,21 @@ const Modal = ({ item, setModalMove, itemsAll, modalMove, setShowModal }) => {
 
         {showDelete ? (
           <div className={cl.Modal__button}>
-            {valid === true ? (
-              <input
-                type="number"
-                min={1}
-                placeholder="Введите количество..."
-                ref={amountRef}
-                onChange={(e) => e.target.value}
-                style={{ borderColor: "#4d4d4d" }}
-              />
-            ) : (
-              <input
-                type="text"
-                placeholder="Введите количество..."
-                ref={amountRef}
-                onChange={(e) => e.target.value}
-                style={{ borderColor: "#e24d4d" }}
-              />
-            )}
+            <input
+              type="number"
+              min={1}
+              placeholder={textValid}
+              ref={amountRef}
+              onChange={(e) => e.target.value}
+              style={{ borderColor: `${colorValid}` }}
+            />
+            <button
+              type="button"
+              className={cl.delete__all}
+              onClick={() => (amountRef.current.value = item[0].amount)}
+            >
+              все
+            </button>
             <div className={cl.Modal__button_delete}>
               <button
                 type="button"
@@ -94,14 +98,14 @@ const Modal = ({ item, setModalMove, itemsAll, modalMove, setShowModal }) => {
               >
                 Отмена
               </button>
-              <button type="button" className={cl.delete} onClick={deleteItem}>
+              <button type="button" className={cl.delete} onClick={validItem}>
                 Подтвердить
               </button>
             </div>
           </div>
         ) : (
           <div className={cl.Modal__button}>
-            <button type="button" onClick={() => setShowDelete(true)}>
+            <button type="button" onClick={() => setShowDelete(true)} style={{margin: "60px"}}>
               Удалить предмет
             </button>
           </div>

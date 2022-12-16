@@ -2,28 +2,37 @@
   position: absolute;
   display: flex;
   width: 550px;
-  max-height: 500px;
+  max-height: 530px;
   overflow: hidden;
   z-index: 10;
+
   .Modal {
     width: 100%;
     max-width: 250px;
-    min-height: 490px;
+    min-height: 500px;
     background-color: #262626;
     transition: translate;
     transition-property: transform;
     transition-duration: 1000ms;
     transition-timing-function: ease-in-out;
     border-radius: 25px;
-    // border-right: 1px solid #262626;
-    opacity: 0.95;
+    opacity: 0.87;
+   
     .Modal__close {
-      margin: 15px;
       display: flex;
       justify-content: flex-end;
-      font-size: 30px;
+      align-items: flex-start;
+
       color: white;
-      cursor: url("../../../img//cursor2.png"), pointer;
+
+      p {
+        margin: 15px;
+        cursor: url("../../../img//cursor2.png"), pointer;
+        font-size: 22px;
+      }
+      p:hover {
+        color: #5d5d5d;
+      }
     }
 
     .Modal__img,
@@ -32,21 +41,25 @@
       justify-content: center;
       border-bottom: 1px solid #5d5d5d;
       padding: 20px;
+
     }
 
     .Modal__text {
       flex-direction: column;
       align-items: center;
-      color: #5d5d5d;
+      color: #5d5d5d; 
     }
     .Modal__button {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-
+      .delete__all {
+        margin: 10px;
+        width: 80px;
+        background-color: #5d5d5d;
+      }
       button {
-        margin-top: 60px;
         width: 220px;
         height: 39px;
         background-color: #fa7272;
@@ -62,19 +75,17 @@
         background-color: #fa7272;
       }
       input {
-        margin-top: 20px;
+        margin: 10px;
         background-color: transparent;
-
         padding: 10px;
+        color: white;
       }
       .Modal__button_delete {
         display: flex;
         flex-direction: row;
         .cancel,
         .delete {
-          height: 33px;
           box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-          margin-top: 30px;
         }
         .cancel {
           width: 88px;

@@ -24,10 +24,11 @@
       max-width: 100px;
       max-height: 100px;
       cursor: url("../../../img//cursor2.png"), pointer;
-      z-index: 1;
       overflow: hidden;
+
       img {
         margin-top: 15px;
+        pointer-events: none;
       }
       .amount {
         margin-left: 70px;
