@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import cl from "./Table.module.scss";
 import { items } from "../items";
 import Modal from "../Modal/Modal";
@@ -52,21 +52,17 @@ const Table = ({ borderColor, tableColor }) => {
     }
     e.target.style.background = "#2e2e2e";
   }
+
   function dropHandler(e, item) {
     e.preventDefault();
 
     const indexItem = itemsAll.indexOf(item);
-    let res = itemsAll.filter(e => e.id === currentItem.id);
+    let res = itemsAll.filter((e) => e.id === currentItem.id);
     const indexCurrent = itemsAll.indexOf(res[0]);
-    console.log(indexCurrent);
-    console.log(res);
-    // itemsAll.splice(indexCurrent, 1);
+    itemsAll[indexCurrent] = itemsAll.id = indexCurrent;
+    itemsAll[indexItem] = currentItem;
 
-    // itemsAll.splice(indexItem, 0, currentItem);
-    itemsAll[indexCurrent] = itemsAll.id = indexCurrent
-    itemsAll[indexItem] = currentItem
-
-    itemsAll = itemsAll.map((b) => {
+    itemsAll.map((b) => {
       if (b.id === item.id) {
         return item;
       }
@@ -75,7 +71,7 @@ const Table = ({ borderColor, tableColor }) => {
       }
       return b;
     });
- 
+
     localStorage.setItem("items", JSON.stringify(itemsAll));
     window.location.reload();
   }
