@@ -24,6 +24,22 @@
     background-color: #262626;
     border-radius: 25px;
     border: 1px solid #4d4d4d;
+    button {
+      margin-top: 60px;
+      width: 220px;
+      height: 39px;
+      background-color: #fa7272;
+      color: white;
+      cursor: url("../../img//cursor2.png"), pointer;
+      border-radius: 8px;
+    }
+    button:hover {
+      background-color: #f1f1f1;
+      color: #262626;
+    }
+    button:active {
+      background-color: #fa7272;
+    }
 
     img {
       margin: 18px 14px 20px 14px;
@@ -148,7 +164,7 @@
         input {
           margin-top: 20px;
           background-color: transparent;
-          border-color: #4d4d4d;
+
           padding: 10px;
         }
         .Modal__button_delete {
