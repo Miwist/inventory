@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import cl from "./Inventory.module.scss";
+import cl from "./Modal.module.scss";
 
 const Modal = ({ item, setModalMove, itemsAll, modalMove, setShowModal }) => {
   const [showDelete, setShowDelete] = useState(false);
@@ -8,14 +8,17 @@ const Modal = ({ item, setModalMove, itemsAll, modalMove, setShowModal }) => {
   let amountRef = useRef();
 
   function closeModal() {
-    setShowModal(false);
-    setModalMove(0);
+    setModalMove(525);
+    function close() {
+      setShowModal(false);
+    }
+    setTimeout(close, 800);
   }
   function deleteItem() {
     let amount = amountRef.current.value;
     let Id = item[0].id;
 
-    if (amount <= item[0].amount) {
+    if (amount <= item[0].amount && amount >= 0) {
       setValid(true);
     } else {
       setValid(false);
@@ -36,11 +39,10 @@ const Modal = ({ item, setModalMove, itemsAll, modalMove, setShowModal }) => {
       localStorage.setItem("items", JSON.stringify(itemsAll));
 
       setShowModal(false);
-      setModalMove(0);
+      setModalMove(525);
     }
     console.log(itemsAll === null);
   }
-
 
   return (
     <div className={cl.Modal_container}>
