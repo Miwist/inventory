@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import cl from "./Table.module.scss";
 import { items } from "../items";
 import Modal from "../Modal/Modal";
@@ -8,8 +8,13 @@ const Table = ({ borderColor, tableColor }) => {
   const [modalMove, setModalMove] = useState(525);
   const [showModal, setShowModal] = useState(false);
   const [currentItem, setCurrentItem] = useState();
+  const [count, setCount] = useState(0);
 
   let itemsAll = JSON.parse(localStorage.getItem("items"));
+
+  useEffect(() => {
+    itemsAll = JSON.parse(localStorage.getItem("items"));
+  }, [count]);
 
   function onLoad() {
     localStorage.setItem("items", JSON.stringify(items));
@@ -59,7 +64,7 @@ const Table = ({ borderColor, tableColor }) => {
     const indexItem = itemsAll.indexOf(item);
     let res = itemsAll.filter((e) => e.id === currentItem.id);
     const indexCurrent = itemsAll.indexOf(res[0]);
-    itemsAll[indexCurrent] = itemsAll.id = indexCurrent;
+    itemsAll[indexCurrent] = indexCurrent;
     itemsAll[indexItem] = currentItem;
 
     itemsAll.map((b) => {
@@ -73,38 +78,47 @@ const Table = ({ borderColor, tableColor }) => {
     });
 
     localStorage.setItem("items", JSON.stringify(itemsAll));
-    window.location.reload();
+    setCount((prev) => prev + 1);
   }
 
   return (
     <div className={cl.Table_container}>
       <div className={cl.Table} style={{ backgroundColor: `${tableColor}` }}>
-        {itemsAll.map((item) => (
-          <div
-            className={cl.cell}
-            onClick={() => selectItem(item.id)}
-            onDragStart={(e) => dragStartHandler(e, item)}
-            onDragLeave={(e) => dragLeaveHandler(e, item)}
-            onDragEnd={(e) => dragEndHandler(e, item)}
-            onDragOver={(e) => dragOverHandler(e, item)}
-            onDrop={(e) => dropHandler(e, item)}
-            draggable={true}
-            style={{ borderColor: `${borderColor}` }}
-          >
-            {item.amount ? <img src={item.img} alt={item.name} /> : <div></div>}
-
-            {item.amount ? (
+        {itemsAll.map((item) =>
+          item.amount ? (
+            <div
+              className={cl.cell}
+              onClick={() => selectItem(item.id)}
+              onDragStart={(e) => dragStartHandler(e, item)}
+              onDragLeave={(e) => dragLeaveHandler(e, item)}
+              onDragEnd={(e) => dragEndHandler(e, item)}
+              onDragOver={(e) => dragOverHandler(e, item)}
+              onDrop={(e) => dropHandler(e, item)}
+              draggable={true}
+              style={{ borderColor: `${borderColor}` }}
+            >
+              <img src={item.img} alt={item.name} />
               <div
                 className={cl.amount}
                 style={{ borderColor: `${borderColor}` }}
               >
                 {item.amount}
               </div>
-            ) : (
+            </div>
+          ) : (
+            <div
+              className={cl.cell}
+              onDragStart={(e) => dragStartHandler(e, item)}
+              onDragLeave={(e) => dragLeaveHandler(e, item)}
+              onDragEnd={(e) => dragEndHandler(e, item)}
+              onDragOver={(e) => dragOverHandler(e, item)}
+              onDrop={(e) => dropHandler(e, item)}
+              style={{ borderColor: `${borderColor}` }}
+            >
               <div></div>
-            )}
-          </div>
-        ))}
+            </div>
+          )
+        )}
       </div>
 
       {showModal && (
